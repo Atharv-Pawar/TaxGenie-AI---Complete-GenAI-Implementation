@@ -1,0 +1,72 @@
+OLD TAX REGIME - FY 2024-25 (AY 2025-26)
+Income Tax Act, 1961 (Pre-amended slabs)
+
+NOTE: Old Regime must be ACTIVELY OPTED for from FY 2023-24 onwards.
+
+TAX SLABS (Old Regime FY 2024-25):
+Income Range            | Tax Rate
+Up to ₹2,50,000         | 0%
+₹2,50,001 - ₹5,00,000   | 5%
+₹5,00,001 - ₹10,00,000  | 20%
+Above ₹10,00,000         | 30%
+
+SECTION 87A REBATE (Old Regime):
+- Rebate up to ₹12,500
+- Applicable if net taxable income ≤ ₹5,00,000
+- Makes effective tax ZERO for income up to ₹5L
+
+SURCHARGE (Old Regime):
+Income ₹50L - ₹1Cr: 10% surcharge
+Income ₹1Cr - ₹2Cr: 15% surcharge
+Income ₹2Cr - ₹5Cr: 25% surcharge
+Income > ₹5Cr: 37% surcharge
+
+HEALTH AND EDUCATION CESS: 4% on (tax + surcharge)
+
+STANDARD DEDUCTION: ₹50,000
+
+KEY DEDUCTIONS AVAILABLE:
+Section 80C       : ₹1,50,000 (ELSS, PPF, PF, LIC, etc.)
+Section 80D       : ₹25,000 self + ₹25,000 parents (₹50,000 seniors)
+Section 80CCD(1B) : ₹50,000 (NPS, OVER 80C limit)
+Section 80E       : Full interest on education loan
+Section 80G       : 50-100% of eligible donations
+Section 80TTA     : ₹10,000 on savings account interest
+Section 24(b)     : ₹2,00,000 on home loan interest (self-occupied)
+HRA Exemption     : As per 10(13A) formula
+LTA Exemption     : Actual travel cost, 2 journeys in 4-year block
+
+EXAMPLE TAX CALCULATION (Old Regime):
+Gross Salary: ₹12,00,000
+Less: Standard Deduction: ₹50,000
+Less: Section 80C: ₹1,50,000 (PF + LIC + ELSS)
+Less: Section 80D: ₹25,000 (health insurance)
+Less: NPS 80CCD(1B): ₹50,000
+Less: Professional Tax: ₹2,400
+Taxable Income: ₹12,00,000 - ₹2,77,400 = ₹9,22,600
+
+Tax:
+0-2.5L: ₹0
+2.5-5L: ₹12,500 (5%)
+5-9.22L: ₹84,520 (20%)
+Total Tax: ₹97,020
++ 4% Cess: ₹3,881
+Total: ₹1,00,901
+
+WHO BENEFITS FROM OLD REGIME:
+- Those who can claim deductions > ₹3.75L-4.25L
+- Home loan borrowers (principal + interest combined)
+- High HRA earners in metro cities
+- Investors with full 80C utilisation
+
+SENIOR CITIZENS (Old Regime - Special Slabs):
+Age 60-79 (Senior Citizen):
+Up to ₹3,00,000: 0%
+₹3L-5L: 5%
+₹5L-10L: 20%
+Above ₹10L: 30%
+
+Age 80+ (Super Senior Citizen):
+Up to ₹5,00,000: 0%
+₹5L-10L: 20%
+Above ₹10L: 30%

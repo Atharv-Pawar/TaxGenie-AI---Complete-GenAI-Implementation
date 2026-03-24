@@ -1,0 +1,83 @@
+NEW TAX REGIME - FY 2024-25 (AY 2025-26)
+Finance Act 2023 | Income Tax Act Section 115BAC
+
+DEFAULT REGIME: New Regime is now the DEFAULT from FY 2023-24 onwards.
+Taxpayers must ACTIVELY opt for Old Regime if they want deductions.
+
+TAX SLABS (New Regime FY 2024-25):
+Income Range          | Tax Rate
+Up to ₹3,00,000       | 0%
+₹3,00,001 - ₹6,00,000 | 5%
+₹6,00,001 - ₹9,00,000 | 10%
+₹9,00,001 - ₹12,00,000| 15%
+₹12,00,001 - ₹15,00,000| 20%
+Above ₹15,00,000      | 30%
+
+STANDARD DEDUCTION (Budget 2024 Update):
+₹75,000 (increased from ₹50,000 in FY 2023-24)
+
+SECTION 87A REBATE (New Regime):
+- Rebate up to ₹25,000
+- Applicable if taxable income (after standard deduction) ≤ ₹7,00,000
+- Makes effective tax ZERO for income up to ₹7.75L (₹7L + ₹75K standard deduction)
+
+HEALTH AND EDUCATION CESS: 4% on tax payable
+
+EFFECTIVE TAX CALCULATION EXAMPLE (New Regime):
+Gross Salary: ₹12,00,000
+Standard Deduction: ₹75,000
+Taxable Income: ₹11,25,000
+
+Tax Calculation:
+0-3L: ₹0
+3-6L: ₹15,000 (5%)
+6-9L: ₹30,000 (10%)
+9-11.25L: ₹33,750 (15%)
+Total Tax: ₹78,750
++ 4% Cess: ₹3,150
+Total: ₹81,900
+
+DEDUCTIONS AVAILABLE IN NEW REGIME:
+✅ Standard Deduction: ₹75,000
+✅ Employer NPS contribution (Section 80CCD(2)): Up to 10% of salary
+✅ Gratuity exemption
+✅ Leave encashment exemption
+✅ VRS exemption up to ₹5L
+✅ Interest on home loan for let-out property (Section 24)
+✅ Agriculture income exemption
+
+DEDUCTIONS NOT AVAILABLE IN NEW REGIME:
+❌ Section 80C (ELSS, PPF, LIC, PF contribution beyond statutory amount)
+❌ Section 80D (Health insurance premium)
+❌ HRA Exemption (Section 10(13A))
+❌ LTA Exemption
+❌ Section 24(b) for self-occupied property (home loan interest)
+❌ Section 80E (Education loan interest)
+❌ Section 80G (Donations)
+❌ Section 80TTA (Savings account interest)
+❌ Section 80CCD(1B) (Personal NPS)
+
+WHO SHOULD CHOOSE NEW REGIME:
+1. Income ≤ ₹7.75L (zero tax after rebate)
+2. Those with deductions below the breakeven point
+3. Young earners just starting with minimal investments
+4. Those who haven't invested in 80C instruments
+5. Those who prefer simplicity over tax planning
+
+WHO SHOULD CHOOSE OLD REGIME:
+1. Those with total deductions > ₹3.75L-4.25L (breakeven)
+2. Home loan borrowers (80C principal + 24b interest)
+3. Those paying high rent with HRA benefit
+4. High insurance premium payers
+
+SWITCHING REGIME:
+- Salaried: Can switch every year
+- Business income taxpayers: Can switch only once from New to Old
+
+FORM TO SUBMIT:
+Salaried employees must inform employer at start of year.
+Form 10-IEA to be filed for Old Regime declaration.
+
+BUDGET 2025 UPDATE (Proposed):
+No changes to New Regime slabs in Budget 2025.
+The ₹75,000 standard deduction remains.

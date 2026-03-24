@@ -1,0 +1,74 @@
+NPS - NATIONAL PENSION SYSTEM
+Section 80CCD | FY 2024-25
+
+OVERVIEW:
+NPS is a government-sponsored pension scheme available to all Indian citizens aged 18-70.
+It offers market-linked returns with tax benefits — making it one of the best tax-saving tools.
+
+TAX BENEFITS:
+
+1. Section 80CCD(1) — Employee/Self Contribution:
+   - Deduction up to 10% of salary (basic + DA) for salaried
+   - Up to 20% of gross income for self-employed
+   - Included WITHIN the ₹1,50,000 80C limit
+
+2. Section 80CCD(1B) — Additional Contribution (THE KEY BENEFIT):
+   - Additional deduction of up to ₹50,000
+   - OVER AND ABOVE the ₹1,50,000 limit of 80C
+   - Exclusive to NPS (no other instrument gives this)
+   - Available ONLY in Old Tax Regime
+   - Net tax saving: ₹10,400 at 20% bracket, ₹15,600 at 30% bracket
+
+3. Section 80CCD(2) — Employer Contribution:
+   - Deduction for employer's NPS contribution (up to 10% of salary)
+   - Available in BOTH Old and New Tax Regime
+   - Not part of employee's salary (no TDS)
+
+COMBINED MAXIMUM BENEFIT (Old Regime):
+80C (₹1,50,000) + 80CCD(1B) (₹50,000) = ₹2,00,000 in deductions
+
+NPS ACCOUNT TYPES:
+
+Tier-1 Account (for tax benefits):
+- Mandatory for NPS subscribers
+- Lock-in till age 60 (partial withdrawals allowed after 3 years)
+- Can withdraw 60% as lump sum at maturity (tax-free)
+- 40% must be used to buy annuity
+
+Tier-2 Account (no lock-in, no tax benefit):
+- Optional savings account
+- Freely withdrawable
+- No tax deduction available (except for government employees)
+
+INVESTMENT OPTIONS:
+Auto Choice (Lifecycle Fund): Automatically shifts from equity to debt as you age
+Active Choice: You decide allocation across E (equity), C (corporate bonds), G (government securities)
+
+For age < 50: Up to 75% in equity (E) allowed
+For age > 50: Equity allocation reduces annually
+
+ANNUITY TAX:
+The 40% annuity at maturity is TAXABLE as income in the year received.
+Plan annuity income carefully to avoid higher tax bracket at retirement.
+
+PARTIAL WITHDRAWAL RULES:
+- After 3 years of subscription
+- Maximum 25% of own contribution
+- Allowed for specific purposes: education, marriage, illness, house purchase
+- Maximum 3 partial withdrawals in lifetime
+
+HOW TO OPEN:
+Online: enps.nsdl.com (NSDL eGov) or Karvy
+Banks: HDFC, ICICI, SBI, Axis — all offer NPS through their branches
+PRAN: Permanent Retirement Account Number assigned upon registration
+
+TOP NPS FUND MANAGERS (by returns):
+- HDFC Pension Fund — consistent performer
+- ICICI Prudential Pension Fund — aggressive equity
+- SBI Pension Fund — conservative, government-heavy
+- Kotak Pension Fund — balanced approach
+
+PLANNING TIP:
+If you've already maxed 80C (₹1.5L) and are in the 20% or 30% bracket,
+NPS 80CCD(1B) is the most powerful additional deduction available.
+₹50,000 in NPS saves ₹10,000-₹15,600 in tax depending on your bracket.

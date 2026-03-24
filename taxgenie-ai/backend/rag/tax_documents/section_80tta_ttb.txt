@@ -1,0 +1,38 @@
+SECTION 80TTA / 80TTB - SAVINGS ACCOUNT INTEREST DEDUCTION
+FY 2024-25 | Income Tax Act, 1961
+
+AVAILABLE UNDER: Old Tax Regime ONLY
+
+SECTION 80TTA (For non-senior citizens — below 60 years):
+- Maximum deduction: ₹10,000 per year
+- Eligible interest: Savings account interest from banks, co-ops, post offices
+- NOT applicable to: Fixed deposits, recurring deposits, time deposits
+
+SECTION 80TTB (For senior citizens — 60 years and above):
+- Maximum deduction: ₹50,000 per year
+- Eligible interest: ALL bank interest including FD, RD, savings accounts
+- Replaces 80TTA for senior citizens (use one or the other, not both)
+
+HOW SAVINGS INTEREST IS TAXED:
+1. Bank credits interest to your account
+2. Interest is added to your "Income from Other Sources"
+3. Deduction under 80TTA/80TTB reduces taxable income
+4. Net taxable interest = Interest earned - 80TTA/80TTB deduction
+
+EXAMPLE (Non-senior citizen):
+Savings account interest earned: ₹15,000
+80TTA deduction: ₹10,000
+Taxable interest: ₹5,000
+
+DOCUMENTS:
+- Bank statement / passbook showing interest credited
+- Form 26AS should reflect TDS if any
+
+PLANNING TIP:
+This is a small but easy deduction that many people miss.
+Ensure you include savings interest in your ITR under "Other Sources"
+and claim the 80TTA deduction simultaneously.
+If interest > ₹10,000, only the excess is taxable.
+
+NOTE: This is available only in Old Regime.
+New Regime taxpayers cannot claim 80TTA/80TTB deduction.

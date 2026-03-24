@@ -1,0 +1,58 @@
+SECTION 80G - DEDUCTION FOR DONATIONS TO CHARITABLE INSTITUTIONS
+FY 2024-25 | Income Tax Act, 1961
+
+AVAILABLE UNDER: Old Tax Regime ONLY
+
+DEDUCTION CATEGORIES:
+
+100% DEDUCTION (No qualifying limit):
+- PM National Relief Fund
+- National Defence Fund
+- PM Cares Fund
+- National Foundation for Communal Harmony
+- Approved universities/educational institutions
+- National Blood Transfusion Council
+- Zila Saksharta Samiti
+
+50% DEDUCTION (No qualifying limit):
+- PM Drought Relief Fund
+- National Children's Fund
+- Jawaharlal Nehru Memorial Fund
+- Indira Gandhi Memorial Trust
+- Rajiv Gandhi Foundation
+
+100% DEDUCTION (Subject to 10% qualifying limit):
+- Donations to government for family planning
+- Donations to Indian Olympic Association
+- Approved sports funds
+
+50% DEDUCTION (Subject to 10% qualifying limit):
+- Any other approved charitable institution
+- Religious trusts
+- Municipal corporations or government for development
+
+QUALIFYING LIMIT (for "subject to" categories):
+Maximum = 10% of Adjusted Gross Total Income
+Adjusted GTI = GTI minus long-term capital gains, short-term capital gains,
+               and deductions under 80C to 80U (except 80G)
+
+PAYMENT MODE:
+- Cash donations: Only up to ₹2,000 qualify
+- Above ₹2,000: Must use bank transfer, cheque, DD, online payment
+- No deduction for donations in kind (clothes, food, etc.)
+
+DOCUMENTATION:
+- Receipt from the institution showing their 80G registration number
+- Form 10BE issued by the institution (for donations ≥ ₹2,000)
+- PAN of the institution required
+
+EXAMPLE:
+Donation to PM Cares Fund: ₹10,000
+100% deduction, no qualifying limit
+Deduction: ₹10,000
+Tax saving at 20%: ₹2,000
+Tax saving at 30%: ₹3,000
+
+HOW TO VERIFY 80G STATUS:
+Check at: incometaxindia.gov.in → Search for Exemptions
+Look for Form CSR-1 for CSR donations

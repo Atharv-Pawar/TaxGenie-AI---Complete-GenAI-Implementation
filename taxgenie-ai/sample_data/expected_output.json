@@ -1,0 +1,133 @@
+{
+  "session_id": "demo-session-priya-2025",
+  "status": "completed",
+  "parsed_data": {
+    "gross_salary": 1200000,
+    "basic_salary": 600000,
+    "hra_received": 240000,
+    "lta": 50000,
+    "special_allowance": 310000,
+    "standard_deduction": 50000,
+    "professional_tax": 2400,
+    "section_80c_investments": {
+      "pf": 72000, "ppf": 0, "elss": 0, "lic_premium": 15000,
+      "nsc": 0, "home_loan_principal": 0, "tuition_fees": 0,
+      "total": 87000
+    },
+    "section_80d_premium": {
+      "self_family": 12000, "parents": 0, "total": 12000
+    },
+    "home_loan_interest": 0,
+    "education_loan_interest": 0,
+    "nps_contribution": 0,
+    "total_tds_deducted": 82000,
+    "employer_name": "Tech Corp Pvt Ltd",
+    "pan_number": "ABCDE1234F",
+    "assessment_year": "2025-26"
+  },
+  "missed_deductions": {
+    "claimed_deductions": [
+      {"section": "Standard Deduction", "amount": 50000, "description": "Standard deduction"},
+      {"section": "80C", "amount": 87000, "description": "PF + LIC Premium"},
+      {"section": "80D", "amount": 12000, "description": "Health insurance self/family"}
+    ],
+    "missed_deductions": [
+      {
+        "section": "80C",
+        "potential_saving": 12600,
+        "description": "You can invest ₹63,000 more under Section 80C (current limit ₹1,50,000)",
+        "suggestions": ["ELSS Mutual Funds", "PPF", "NSC", "Life Insurance Premium"],
+        "urgency": "HIGH"
+      },
+      {
+        "section": "HRA",
+        "potential_saving": 18000,
+        "description": "If you pay rent, HRA exemption could save ₹18,000+ based on your basic salary",
+        "suggestions": ["Submit rent receipts to employer", "Claim HRA in ITR-1", "Landlord PAN required if rent > ₹1L/year"],
+        "urgency": "HIGH"
+      },
+      {
+        "section": "80D (Parents)",
+        "potential_saving": 5000,
+        "description": "Health insurance for parents can save up to ₹5,000 in taxes",
+        "suggestions": ["Buy family floater plan for parents", "Up to ₹50,000 deduction for senior citizen parents"],
+        "urgency": "MEDIUM"
+      },
+      {
+        "section": "80CCD(1B) - NPS",
+        "potential_saving": 10000,
+        "description": "NPS contributions up to ₹50,000 are deductible over the 80C limit",
+        "suggestions": ["Open NPS account at enps.nsdl.com", "Invest in Tier-1 NPS account"],
+        "urgency": "MEDIUM"
+      }
+    ],
+    "total_potential_savings": 45600
+  },
+  "regime_comparison": {
+    "old_regime": {
+      "gross_income": 1200000,
+      "total_deductions": 181400,
+      "taxable_income": 1018600,
+      "tax_before_cess": 118580,
+      "health_education_cess": 4743,
+      "total_tax": 123323,
+      "breakdown": {
+        "standard_deduction": 50000,
+        "professional_tax": 2400,
+        "section_80c": 87000,
+        "section_80d": 12000,
+        "nps_80ccd1b": 0,
+        "home_loan_interest_24b": 0
+      }
+    },
+    "new_regime": {
+      "gross_income": 1200000,
+      "total_deductions": 75000,
+      "taxable_income": 1125000,
+      "tax_before_cess": 95000,
+      "health_education_cess": 3800,
+      "total_tax": 98800,
+      "breakdown": {
+        "standard_deduction_new": 75000
+      }
+    },
+    "recommended_regime": "NEW",
+    "savings_with_recommended": 24523,
+    "recommendation_reason": "The New Tax Regime saves you ₹24,523 because your current deductions (₹1,81,400) don't cross the breakeven threshold. You'd need deductions above ₹3,20,000 for the Old Regime to win.",
+    "breakeven_deduction_amount": 320000
+  },
+  "investment_recommendations": [
+    {
+      "instrument": "ELSS Mutual Funds",
+      "section": "80C",
+      "recommended_amount": 37800,
+      "expected_returns": "12-14% CAGR (historical)",
+      "lock_in_period": "3 years (shortest among 80C)",
+      "risk_level": "Moderate-High",
+      "reason": "Fill ₹63,000 80C gap — best returns with tax saving",
+      "top_picks": ["Mirae Asset Tax Saver Fund", "Canara Robeco Equity Tax Saver", "Axis ELSS Tax Saver"]
+    },
+    {
+      "instrument": "PPF (Public Provident Fund)",
+      "section": "80C",
+      "recommended_amount": 25200,
+      "expected_returns": "7.1% p.a. (tax-free, government-guaranteed)",
+      "lock_in_period": "15 years (partial withdrawal from 7th year)",
+      "risk_level": "Low",
+      "reason": "Safe, EEE-status returns for capital preservation",
+      "top_picks": ["SBI PPF Account", "Post Office PPF"]
+    },
+    {
+      "instrument": "NPS (National Pension System)",
+      "section": "80CCD(1B)",
+      "recommended_amount": 50000,
+      "expected_returns": "8-10% CAGR (market-linked)",
+      "lock_in_period": "Till retirement (age 60)",
+      "risk_level": "Moderate",
+      "reason": "Extra ₹50,000 deduction beyond 80C limit — saves ₹10,000 in taxes",
+      "top_picks": ["HDFC Pension Fund", "SBI Pension Fund"]
+    }
+  ],
+  "summary": "🎉 Great news! You could save up to ₹45,600 more in taxes this year!\n\nBased on your salary of ₹12,00,000 at Tech Corp, the New Tax Regime is better for you right now — saving ₹24,523 immediately.\n\nYour biggest opportunity is investing ₹63,000 more in Section 80C (ELSS + PPF) and contributing ₹50,000 to NPS — that's an additional ₹22,600 in tax savings.\n\n🎯 Priority Action: Inform HR to deduct as per New Regime, and start a monthly SIP in Mirae Asset Tax Saver ELSS.",
+  "total_potential_savings": 45600
+}

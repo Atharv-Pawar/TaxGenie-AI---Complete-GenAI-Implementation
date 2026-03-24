@@ -1,0 +1,44 @@
+SURCHARGE ON INCOME TAX
+FY 2024-25 | Income Tax Act, 1961
+
+WHAT IS SURCHARGE?
+Surcharge is an additional tax levied on the income tax of high-income individuals.
+It is calculated as a percentage of the income tax (before cess).
+
+SURCHARGE RATES — OLD REGIME (FY 2024-25):
+Income Range               | Surcharge Rate
+₹50,00,000 - ₹1,00,00,000 | 10%
+₹1,00,00,001 - ₹2,00,00,000| 15%
+₹2,00,00,001 - ₹5,00,00,000| 25%
+Above ₹5,00,00,000         | 37% (reduced to 25% for New Regime)
+
+SURCHARGE RATES — NEW REGIME (FY 2024-25):
+Income Range               | Surcharge Rate
+₹50,00,000 - ₹1,00,00,000 | 10%
+₹1,00,00,001 - ₹2,00,00,000| 15%
+₹2,00,00,001 - ₹5,00,00,000| 25%
+Above ₹5,00,00,000         | 25% (capped — Budget 2023 relief)
+
+KEY CHANGE (Budget 2023):
+Maximum surcharge reduced from 37% to 25% in New Regime.
+This makes New Regime significantly more attractive for income > ₹5 crore.
+
+MARGINAL RELIEF:
+When income exceeds a surcharge threshold, the additional tax
+(surcharge) cannot exceed the additional income. This prevents a
+situation where crossing a threshold causes a disproportionate tax.
+
+CALCULATION EXAMPLE (Income ₹60,00,000 — Old Regime):
+Tax on ₹60,00,000: approx ₹17,22,500
+Surcharge (10%): ₹1,72,250
+Total before cess: ₹18,94,750
+Health & Education Cess (4%): ₹75,790
+TOTAL TAX: ₹19,70,540
+
+NOTE: For most salaried employees earning under ₹50 lakh,
+surcharge does NOT apply. Only affects high earners.
+
+EFFECTIVE TAX RATES WITH SURCHARGE + CESS:
+- Income ₹50L-₹1Cr: Effective rate up to ~34.32% (Old) / ~34.32% (New)
+- Income ₹1-2Cr: Up to ~35.88% (Old) / ~35.88% (New)
+- Income > ₹5Cr: Up to ~42.74% (Old) / ~39% (New) — New Regime wins here
