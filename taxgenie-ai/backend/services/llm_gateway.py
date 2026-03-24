@@ -1,171 +1,90 @@
 """
-LLM Gateway - Unified interface for multiple LLM providers
-Uses LiteLLM for provider abstraction
+TaxGenie AI - LLM Gateway Service
+Unified LLM interface using LiteLLM for routing between OpenAI and Anthropic.
 """
 
+import logging
+from typing import Optional
 import litellm
-from litellm import completion, acompletion, embedding
-from typing import List, Dict, Any, Optional
-import base64
 from config import settings
 
+logger = logging.getLogger(__name__)
+
 # Configure LiteLLM
-litellm.set_verbose = settings.DEBUG
+litellm.openai_key = settings.OPENAI_API_KEY
+litellm.anthropic_key = settings.ANTHROPIC_API_KEY
+litellm.set_verbose = False
 
 
-class LLMGateway:
+async def llm_call(
+    model: str,
+    system_prompt: str,
+    user_message: str,
+    temperature: float = 0.1,
+    max_tokens: int = 4096,
+    response_format: Optional[dict] = None,
+) -> str:
     """
-    Unified gateway for all LLM calls
-    Supports: OpenAI, Anthropic, with automatic fallback
+    Make a single LLM call and return the text response.
+    Handles both OpenAI and Anthropic models transparently via LiteLLM.
     """
-    
-    def __init__(self):
-        self.default_model = settings.PRIMARY_MODEL
-        self.vision_model = settings.VISION_MODEL
-        self.embedding_model = settings.EMBEDDING_MODEL
-    
-    async def generate(
-        self,
-        prompt: str,
-        system_prompt: Optional[str] = None,
-        model: Optional[str] = None,
-        temperature: float = 0.7,
-        max_tokens: int = 4096,
-        json_mode: bool = False
-    ) -> str:
-        """
-        Generate text completion
-        """
-        model = model or self.default_model
-        
-        messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": prompt})
-        
+    try:
+        messages = [{"role": "user", "content": user_message}]
+
         kwargs = {
             "model": model,
             "messages": messages,
             "temperature": temperature,
             "max_tokens": max_tokens,
         }
-        
-        if json_mode and "gpt" in model:
-            kwargs["response_format"] = {"type": "json_object"}
-        
-        response = await acompletion(**kwargs)
-        return response.choices[0].message.content
-    
-    async def generate_with_image(
-        self,
-        prompt: str,
-        image_data: bytes,
-        system_prompt: Optional[str] = None,
-        model: Optional[str] = None,
-        temperature: float = 0.3,
-        max_tokens: int = 4096
-    ) -> str:
-        """
-        Generate completion with image input (GPT-4V)
-        """
-        model = model or self.vision_model
-        
-        # Encode image to base64
-        base64_image = base64.b64encode(image_data).decode('utf-8')
-        
-        messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        
-        messages.append({
-            "role": "user",
-            "content": [
-                {"type": "text", "text": prompt},
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:image/png;base64,{base64_image}",
-                        "detail": "high"
-                    }
-                }
+
+        # System prompt handling (different for anthropic vs openai)
+        if "claude" in model.lower():
+            kwargs["system"] = system_prompt
+        else:
+            kwargs["messages"] = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
             ]
-        })
-        
-        response = await acompletion(
-            model=model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens
-        )
-        
+
+        if response_format:
+            kwargs["response_format"] = response_format
+
+        response = await litellm.acompletion(**kwargs)
         return response.choices[0].message.content
-    
-    async def generate_chat(
-        self,
-        messages: List[Dict[str, str]],
-        model: Optional[str] = None,
-        temperature: float = 0.7,
-        max_tokens: int = 4096
-    ) -> str:
-        """
-        Generate chat completion with message history
-        """
-        model = model or self.default_model
-        
-        response = await acompletion(
-            model=model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens
-        )
-        
-        return response.choices[0].message.content
-    
-    async def get_embeddings(
-        self,
-        texts: List[str],
-        model: Optional[str] = None
-    ) -> List[List[float]]:
-        """
-        Get embeddings for texts
-        """
-        model = model or self.embedding_model
-        
-        response = await litellm.aembedding(
-            model=model,
-            input=texts
-        )
-        
-        return [item["embedding"] for item in response.data]
-    
-    async def generate_streaming(
-        self,
-        prompt: str,
-        system_prompt: Optional[str] = None,
-        model: Optional[str] = None,
-        temperature: float = 0.7
-    ):
-        """
-        Generate streaming completion
-        """
-        model = model or self.default_model
-        
-        messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": prompt})
-        
-        response = await acompletion(
-            model=model,
-            messages=messages,
-            temperature=temperature,
-            stream=True
-        )
-        
-        async for chunk in response:
-            if chunk.choices[0].delta.content:
-                yield chunk.choices[0].delta.content
+
+    except Exception as e:
+        logger.error(f"LLM call failed for model {model}: {e}")
+        raise RuntimeError(f"LLM call failed: {str(e)}")
 
 
-# Singleton instance
-llm = LLMGateway()
+async def chat_completion(
+    model: str,
+    system_prompt: str,
+    messages: list,
+    temperature: float = 0.3,
+    max_tokens: int = 2048,
+) -> str:
+    """
+    Multi-turn chat completion with message history.
+    """
+    try:
+        kwargs = {
+            "model": model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        }
+
+        if "claude" in model.lower():
+            kwargs["system"] = system_prompt
+        else:
+            full_messages = [{"role": "system", "content": system_prompt}] + messages
+            kwargs["messages"] = full_messages
+
+        response = await litellm.acompletion(**kwargs)
+        return response.choices[0].message.content
+
+    except Exception as e:
+        logger.error(f"Chat completion failed: {e}")
+        raise RuntimeError(f"Chat completion failed: {str(e)}")

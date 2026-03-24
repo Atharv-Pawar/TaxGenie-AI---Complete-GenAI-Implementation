@@ -1,0 +1,56 @@
+UNION BUDGET 2025 - KEY TAX CHANGES FOR SALARIED INDIVIDUALS
+Presented: February 1, 2025
+
+MAJOR ANNOUNCEMENT: ZERO TAX UP TO ₹12 LAKH INCOME (NEW REGIME)
+This is the headline change of Budget 2025.
+
+NEW TAX SLABS (New Regime - Effective FY 2025-26 / AY 2026-27):
+Income Range            | Tax Rate
+Up to ₹4,00,000         | 0%
+₹4,00,001 - ₹8,00,000   | 5%
+₹8,00,001 - ₹12,00,000  | 10%
+₹12,00,001 - ₹16,00,000 | 15%
+₹16,00,001 - ₹20,00,000 | 20%
+₹20,00,001 - ₹24,00,000 | 25%
+Above ₹24,00,000         | 30%
+
+SECTION 87A REBATE ENHANCED:
+- Rebate increased to ₹60,000
+- Applicable if net income ≤ ₹12,00,000
+- With ₹75,000 standard deduction: zero tax up to ₹12.75L for salaried
+
+NOTE: Above slabs are effective FY 2025-26 (AY 2026-27).
+For FY 2024-25 (current), the previous slabs apply (₹3L/₹6L/₹9L/₹12L/₹15L).
+
+CHANGES FOR FY 2024-25 (What applies NOW):
+No major changes. The following remain:
+- Standard Deduction: ₹75,000 (New Regime)
+- Standard Deduction: ₹50,000 (Old Regime)
+- New Regime remains default
+- All deductions same as before
+
+TDS RULES UPDATED:
+- TDS threshold on rent enhanced
+- New TDS return filing requirements
+- Easier TDS credit for salaried employees
+
+UPDATED CAPITAL GAINS TAX:
+- STCG (Short Term Capital Gains) on equity: 20% (up from 15%)
+- LTCG (Long Term Capital Gains) on equity: 12.5% (up from 10%)
+- LTCG exemption threshold: ₹1.25L (up from ₹1L)
+- Debt mutual funds: Slab rate taxation continues
+
+NPS CHANGES:
+- NPS Vatsalya introduced for minors
+- Contribution on behalf of minor child qualifies under 80C
+
+IMPACT ON TAX PLANNING FOR FY 2024-25:
+1. Old vs New Regime breakeven analysis still critical
+2. Capital gains strategy: Book LTCG up to ₹1.25L annually (tax-free)
+3. NPS still excellent for additional ₹50,000 deduction (Old Regime)
+4. Health insurance becomes more important with medical inflation
+
+PLANNING FOR FY 2025-26 (Advance):
+- New regime becomes significantly more attractive
+- Zero tax for income up to ₹12.75L with standard deduction
+- Old Regime only beneficial if deductions > ₹5L+ approximately

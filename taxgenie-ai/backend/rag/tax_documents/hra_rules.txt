@@ -1,0 +1,64 @@
+HRA EXEMPTION - SECTION 10(13A)
+FY 2024-25 | Income Tax Act, 1961
+
+AVAILABLE UNDER: Old Tax Regime ONLY
+
+WHAT IS HRA?
+House Rent Allowance is part of salary package. The exemption reduces your taxable income.
+
+HRA EXEMPTION CALCULATION - MINIMUM OF THREE:
+1. Actual HRA received from employer
+2. 50% of basic salary (metro cities) OR 40% of basic salary (non-metro)
+3. Actual rent paid MINUS 10% of basic salary
+
+METRO CITIES (50% rule): Delhi, Mumbai, Chennai, Kolkata
+NON-METRO (40% rule): All other cities including Bangalore, Hyderabad, Pune, Ahmedabad
+
+EXAMPLE CALCULATION (Mumbai):
+- Gross Salary: ₹12,00,000
+- Basic Salary: ₹6,00,000
+- HRA Received: ₹2,40,000
+- Rent Paid: ₹2,40,000/year (₹20,000/month)
+
+Method 1: Actual HRA = ₹2,40,000
+Method 2: 50% of Basic = ₹3,00,000
+Method 3: Rent - 10% Basic = ₹2,40,000 - ₹60,000 = ₹1,80,000
+
+HRA Exemption = Min(₹2,40,000, ₹3,00,000, ₹1,80,000) = ₹1,80,000
+Taxable HRA = ₹2,40,000 - ₹1,80,000 = ₹60,000
+
+ELIGIBILITY CONDITIONS:
+1. Employee must receive HRA as part of salary
+2. Employee must actually pay rent
+3. Employee must not own the property they're living in
+4. Rent cannot be paid to spouse
+
+DOCUMENTATION:
+- Rent receipts (monthly) with revenue stamp if > ₹5,000/month
+- Rent agreement (preferred)
+- Landlord's PAN mandatory if annual rent > ₹1,00,000
+- Declaration form from employer
+
+CLAIMING HRA:
+Option 1: Submit to employer - HRA excluded from TDS
+Option 2: Claim in ITR - Fill Schedule HRA in ITR-1
+
+LIVING WITH PARENTS:
+- You CAN pay rent to parents
+- Parents declare rental income in their ITR
+- Rental income likely zero/low for them if house is in their name
+- Ensure proper rent receipts and bank transfer
+
+SELF-EMPLOYED:
+- Self-employed cannot claim HRA under Section 10(13A)
+- Can claim rent under Section 80GG instead (max ₹60,000/year)
+
+COMMON MISTAKES:
+1. Not submitting rent receipts to employer → paying excess TDS
+2. Annual rent > ₹1L without landlord PAN → claim rejected
+3. Paying rent in cash → harder to prove for IT scrutiny
+4. Not including HRA while filing ITR
+
+PLANNING TIP:
+If you don't receive HRA but pay rent, use Section 80GG (max ₹60,000/year).
+If you receive HRA but live in own house, entire HRA is taxable.

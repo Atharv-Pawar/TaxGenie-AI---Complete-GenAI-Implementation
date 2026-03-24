@@ -1,168 +1,163 @@
-# agents/chat_agent.py
 """
-Tax Chat Agent
-Multi-turn conversational AI for tax questions.
-Uses GPT-4 with RAG context from the knowledge base.
-Maintains conversation history per session.
+TaxGenie AI - Chat Agent
+Context-aware conversational agent for tax Q&A.
 """
 
-import json
 import logging
-from openai import AsyncOpenAI
+from services.llm_gateway import chat_completion
+from services.memory_store import get_session, get_chat_history, append_chat_message
+from models.response_models import ChatResponse
 from config import settings
 
 logger = logging.getLogger(__name__)
 
-
 SYSTEM_PROMPT = """
-You are TaxGenie — a friendly, expert Indian tax advisor chatbot.
+You are TaxGenie, a friendly and expert Indian tax assistant. You help salaried employees
+understand their taxes, deductions, and financial planning.
 
-Your expertise:
-- Indian Income Tax Act (FY 2024-25)
-- All deductions: 80C, 80D, 80CCD, 80E, 80G, HRA, LTA, etc.
-- Old vs New tax regime comparison
-- Tax-saving investment strategies
-- ITR filing process and deadlines
+Your personality:
+- Warm and encouraging, like a knowledgeable friend
+- Use simple language, avoid jargon
+- Always give specific numbers when available from the user's data
+- If you don't know something, say so honestly
+- Keep responses concise (3-5 sentences max unless they ask for detail)
+- Always end with one actionable next step
 
-Communication rules:
-- Use simple, friendly language
-- Cite sections (e.g., "Under Section 80C...")
-- Always use ₹ for amounts
-- Be specific and actionable
-- If unsure, say so honestly
-- Keep responses concise (under 200 words usually)
-- When user shares their data, give personalized advice
+You have access to this user's tax analysis (provided in context). Use their specific numbers
+to personalise every response.
 
-Current Tax Year: FY 2024-25 (AY 2025-26)
-ITR Filing Deadline: July 31, 2025
-""".strip()
+Topics you excel at:
+- Old vs New tax regime comparisons
+- Section 80C, 80D, HRA, NPS deductions
+- Form 16 and ITR filing
+- Tax-saving investments (ELSS, PPF, NPS)
+- Understanding salary slips and TDS
+"""
 
 
-class TaxChatAgent:
-    """
-    Conversational tax advisor with session memory.
-    """
+async def chat_agent(
+    session_id: str,
+    user_message: str,
+) -> ChatResponse:
+    """Process a chat message with full context awareness."""
+    # Load user's tax data for context
+    session = get_session(session_id)
+    context = _build_context(session)
 
-    # Max messages to keep in context window
-    MAX_HISTORY = 20
+    # Load conversation history
+    history = get_chat_history(session_id)
+    history.append({"role": "user", "content": user_message})
 
-    def __init__(self):
-        self.client   = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-        self.sessions: dict[str, list[dict]] = {}
+    model = settings.CHAT_MODEL if settings.ANTHROPIC_API_KEY else (
+        settings.PDF_PARSER_MODEL if settings.OPENAI_API_KEY else None
+    )
 
-    async def chat(
-        self,
-        session_id: str,
-        user_message: str,
-        user_context: dict | None = None,
-    ) -> dict:
-        """
-        Process a chat message and return AI response.
-
-        Args:
-            session_id:   Unique session identifier
-            user_message: The user's question
-            user_context: Optional tax data for personalized answers
-
-        Returns:
-            Dict with response and updated message count
-        """
-        logger.info(f"[ChatAgent] Session {session_id}: {user_message[:60]}...")
-
-        # Get or initialize session history
-        history = self.sessions.get(session_id, [])
-
-        # Build context message if user data available
-        context_msg = self._build_context_message(user_context)
-
-        # Build messages for API
-        messages = self._build_messages(history, context_msg, user_message)
-
-        # Call GPT-4
-        response_text = await self._call_gpt4(messages)
-
-        # Update session history
-        history.append({"role": "user",      "content": user_message})
-        history.append({"role": "assistant",  "content": response_text})
-
-        # Trim if too long
-        if len(history) > self.MAX_HISTORY:
-            history = history[-self.MAX_HISTORY:]
-
-        self.sessions[session_id] = history
-
-        return {
-            "response":      response_text,
-            "session_id":    session_id,
-            "message_count": len(history) // 2,
-        }
-
-    def clear_session(self, session_id: str) -> None:
-        """Clear conversation history for a session."""
-        if session_id in self.sessions:
-            del self.sessions[session_id]
-            logger.info(f"[ChatAgent] Session {session_id} cleared")
-
-    def get_history(self, session_id: str) -> list[dict]:
-        """Get conversation history for a session."""
-        return self.sessions.get(session_id, [])
-
-    # ── Private Helpers ───────────────────────────────────────────────────────
-
-    def _build_context_message(self, user_context: dict | None) -> str | None:
-        """
-        Build a system-level context message from user's tax data.
-        """
-        if not user_context:
-            return None
-
-        gross    = user_context.get("gross_salary", 0)
-        deductions = user_context.get("deductions_chapter_vi_a", {})
-
-        return (
-            f"[USER CONTEXT]\n"
-            f"Gross Salary: ₹{gross:,.0f}\n"
-            f"80C Claimed: ₹{deductions.get('section_80c', 0):,.0f}\n"
-            f"NPS 80CCD(1B): ₹{deductions.get('section_80ccd_1b', 0):,.0f}\n"
-            f"80D Health: ₹{deductions.get('section_80d', 0):,.0f}\n"
-            f"Use this data to give personalized answers."
+    if not model:
+        reply = _simple_fallback(user_message)
+        append_chat_message(session_id, "user", user_message)
+        append_chat_message(session_id, "assistant", reply)
+        return ChatResponse(
+            response=reply,
+            follow_up_suggestions=_suggest_followups(user_message),
         )
 
-    def _build_messages(
-        self,
-        history:     list[dict],
-        context_msg: str | None,
-        user_message: str,
-    ) -> list[dict]:
-        """
-        Build the messages array for the OpenAI API.
-        """
-        messages: list[dict] = [
-            {"role": "system", "content": SYSTEM_PROMPT}
-        ]
+    system = SYSTEM_PROMPT + f"\n\nUser's Tax Data:\n{context}"
 
-        # Add user context as system message if available
-        if context_msg:
-            messages.append({"role": "system", "content": context_msg})
-
-        # Add conversation history
-        messages.extend(history)
-
-        # Add current message
-        messages.append({"role": "user", "content": user_message})
-
-        return messages
-
-    async def _call_gpt4(self, messages: list[dict]) -> str:
-        """Call GPT-4 with the built messages."""
-        response = await self.client.chat.completions.create(
-            model       = settings.PRIMARY_MODEL,
-            temperature = 0.7,
-            max_tokens  = 800,
-            messages    = messages,
+    try:
+        response_text = await chat_completion(
+            model=model,
+            system_prompt=system,
+            messages=history[-10:],  # Keep last 10 turns
+            temperature=0.4,
+            max_tokens=600,
         )
-        return response.choices[0].message.content
+
+        append_chat_message(session_id, "user", user_message)
+        append_chat_message(session_id, "assistant", response_text)
+
+        return ChatResponse(
+            response=response_text,
+            sources=_extract_sources(user_message),
+            follow_up_suggestions=_suggest_followups(user_message),
+        )
+
+    except Exception as e:
+        logger.error(f"Chat Agent failed: {e}")
+        reply = _simple_fallback(user_message)
+        return ChatResponse(
+            response=reply,
+            follow_up_suggestions=_suggest_followups(user_message),
+        )
 
 
-# ── Singleton ─────────────────────────────────────────────────────────────────
-chat_agent = TaxChatAgent()
+def _build_context(session: dict | None) -> str:
+    if not session:
+        return "No tax analysis available yet. Ask the user to upload their Form 16 first."
+
+    lines = []
+    if pd := session.get("parsed_data"):
+        lines.append(f"Gross Salary: ₹{pd.get('gross_salary', 0):,.0f}")
+        lines.append(f"Employer: {pd.get('employer_name', 'Unknown')}")
+        lines.append(f"TDS Paid: ₹{pd.get('total_tds_deducted', 0):,.0f}")
+
+    if rc := session.get("regime_comparison"):
+        old = rc.get("old_regime", {})
+        new = rc.get("new_regime", {})
+        lines.append(f"Old Regime Tax: ₹{old.get('total_tax', 0):,.0f}")
+        lines.append(f"New Regime Tax: ₹{new.get('total_tax', 0):,.0f}")
+        lines.append(f"Recommended: {rc.get('recommended_regime', 'Unknown')} Regime")
+
+    if md := session.get("missed_deductions"):
+        missed = md.get("missed_deductions", [])
+        lines.append(f"Missed Deductions: {len(missed)} opportunities worth ₹{md.get('total_potential_savings', 0):,.0f}")
+
+    return "\n".join(lines) if lines else "Analysis in progress."
+
+
+def _extract_sources(message: str) -> list[str]:
+    """Return relevant legal sources based on the question."""
+    sources = []
+    msg = message.lower()
+    if "hra" in msg: sources.append("Section 10(13A) - HRA Exemption")
+    if "80c" in msg or "elss" in msg or "ppf" in msg: sources.append("Section 80C - Deductions")
+    if "80d" in msg or "health" in msg: sources.append("Section 80D - Health Insurance")
+    if "nps" in msg: sources.append("Section 80CCD(1B) - NPS")
+    if "regime" in msg: sources.append("Finance Act 2023 - New Tax Regime")
+    if "87a" in msg: sources.append("Section 87A - Tax Rebate")
+    return sources[:3]
+
+
+def _suggest_followups(message: str) -> list[str]:
+    msg = message.lower()
+    if "regime" in msg:
+        return ["How much can I save with Old Regime if I invest more?",
+                "What deductions are available only in Old Regime?"]
+    if "80c" in msg or "invest" in msg:
+        return ["Which ELSS fund has the best returns?",
+                "Should I invest in PPF or ELSS?",
+                "What is the maximum I can invest in 80C?"]
+    if "hra" in msg:
+        return ["What documents do I need for HRA?",
+                "Can I claim HRA if I live with parents?"]
+    return [
+        "Which tax regime is better for me?",
+        "What investments can reduce my tax?",
+        "How do I claim HRA exemption?",
+    ]
+
+
+def _simple_fallback(message: str) -> str:
+    msg = message.lower()
+    if "regime" in msg:
+        return ("The choice between Old and New Regime depends on your deductions. "
+                "Old Regime is better if you have deductions above ~₹3.75L. "
+                "Upload your Form 16 and I'll calculate the exact numbers for you!")
+    if "hra" in msg:
+        return ("HRA exemption = minimum of (actual HRA received, 50% of basic in metro/40% elsewhere, "
+                "rent paid minus 10% of basic salary). You'll need rent receipts to claim it.")
+    if "80c" in msg:
+        return ("Section 80C allows deductions up to ₹1,50,000 per year. "
+                "Popular instruments: ELSS (equity, 3yr lock-in), PPF (safe, 15yr), "
+                "LIC premium, PF contribution, and NSC.")
+    return ("That's a great tax question! For a personalised answer based on your specific income and deductions, "
+            "please upload your Form 16 and I'll give you exact numbers.")

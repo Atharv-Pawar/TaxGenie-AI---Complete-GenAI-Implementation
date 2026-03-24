@@ -1,0 +1,73 @@
+SECTION 80C - DEDUCTIONS FROM TAXABLE INCOME
+FY 2024-25 | Income Tax Act, 1961
+
+MAXIMUM DEDUCTION: ₹1,50,000 per financial year
+
+ELIGIBLE INVESTMENTS AND PAYMENTS:
+
+1. EMPLOYEE PROVIDENT FUND (EPF)
+   - Employee's own contribution qualifies
+   - Employer contribution does NOT qualify under 80C (exempt separately)
+   - Minimum 12% of basic salary typically mandated
+
+2. PUBLIC PROVIDENT FUND (PPF)
+   - Minimum ₹500/year, Maximum ₹1,50,000/year
+   - Lock-in: 15 years (partial withdrawal from 7th year)
+   - Returns: 7.1% p.a. (government-set, reviewed quarterly)
+   - Returns are FULLY TAX-FREE (EEE status)
+   - Loan facility from 3rd to 6th year
+
+3. EQUITY LINKED SAVINGS SCHEME (ELSS)
+   - Only mutual fund eligible for 80C
+   - Lock-in: 3 years (SHORTEST among 80C instruments)
+   - Returns: Market-linked (historically 12-15% CAGR)
+   - No upper limit on investment (only ₹1.5L qualifies for deduction)
+   - Long-term capital gains above ₹1L taxed at 10%
+   - Top performers: Axis ELSS, Mirae Asset Tax Saver, Quant Tax Plan, Parag Parikh
+
+4. LIFE INSURANCE PREMIUM (LIC)
+   - Premium for policies on self, spouse, children
+   - Premium must be ≤ 10% of sum assured (for policies after April 2012)
+   - Maturity proceeds are tax-free if premium < 10% of sum assured
+
+5. NATIONAL SAVINGS CERTIFICATE (NSC)
+   - 5-year lock-in
+   - Returns: 7.7% p.a. (FY 2024-25)
+   - Interest accrued annually also qualifies as reinvestment under 80C
+   - Available at Post Offices
+
+6. SUKANYA SAMRIDDHI YOJANA (SSY)
+   - For girl children below 10 years
+   - Returns: 8.2% p.a. (highest government scheme)
+   - Lock-in: Till age 21 of girl child
+   - EEE tax status
+
+7. TAX SAVING FIXED DEPOSIT
+   - 5-year lock-in at any bank
+   - Returns: 6.5-7.5% p.a. (varies by bank)
+   - Interest is TAXABLE (only principal qualifies under 80C)
+
+8. HOME LOAN PRINCIPAL REPAYMENT
+   - Principal component of EMI qualifies
+   - Property must not be sold within 5 years of possession
+   - If sold within 5 years, deduction is reversed
+
+9. TUITION FEES
+   - For full-time education in India
+   - Maximum 2 children per taxpayer
+   - Only tuition fees (not development/transport/uniform fees)
+
+10. ULIP (UNIT LINKED INSURANCE PLAN)
+    - Premium qualifies under 80C
+    - Subject to 10% premium-to-sum-assured ratio
+
+IMPORTANT NOTES:
+- The ₹1,50,000 limit is COMBINED across all instruments
+- Senior citizens can also invest but may prefer other options
+- 80C is available ONLY under Old Tax Regime
+- Section 80C + 80CCC + 80CCD(1) combined limit: ₹1,50,000
+
+PLANNING TIP:
+For young investors (< 35 years): ELSS is usually the best 80C option
+For risk-averse investors: PPF + Tax Saving FD combination
+For those needing insurance: LIC Term Plan + ELSS (don't mix insurance + investment)

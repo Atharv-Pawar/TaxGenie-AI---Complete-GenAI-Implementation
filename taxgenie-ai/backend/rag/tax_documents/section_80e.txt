@@ -1,0 +1,51 @@
+SECTION 80E - INTEREST ON EDUCATION LOAN
+FY 2024-25 | Income Tax Act, 1961
+
+AVAILABLE UNDER: Old Tax Regime ONLY
+
+DEDUCTION LIMIT: NO UPPER LIMIT — full interest paid is deductible
+
+ELIGIBILITY:
+- Loan must be taken for higher education
+- For self, spouse, children, or student for whom you are legal guardian
+- Loan must be from a financial institution or approved charitable institution
+- NOT available for loans from friends, relatives, or employers
+
+ELIGIBLE COURSES:
+- Any full-time graduate or postgraduate course in science, technology, engineering, mathematics
+- Management courses (MBA, PGDM)
+- Applied or pure sciences
+- Vocational courses (post-secondary)
+- Professional courses (medicine, law, engineering)
+- Courses pursued in India or abroad
+
+TIME PERIOD:
+- Deduction available for the year you start repaying the loan
+- Plus the immediately succeeding 7 years
+- Maximum benefit period: 8 years
+
+WHAT QUALIFIES:
+✅ Interest component of EMI
+✅ Pre-payment interest
+
+WHAT DOES NOT QUALIFY:
+❌ Principal repayment (not eligible under 80E, may qualify under 80C for housing)
+❌ Loans from employer
+❌ Personal loans used for education (must be specifically education loan)
+
+DOCUMENTATION:
+- Certificate from lender showing interest paid during the year
+- Loan sanction letter
+- Course admission letter / degree certificate
+
+EXAMPLE:
+Education loan outstanding: ₹8,00,000
+Interest paid in FY 2024-25: ₹72,000
+Deduction under 80E: ₹72,000 (full amount, no limit)
+Tax saving at 20% bracket: ₹14,400
+Tax saving at 30% bracket: ₹21,600
+
+PLANNING TIP:
+If you have an education loan, ensure you're claiming the full interest under 80E.
+Many people miss this because they assume there's a limit — there is NONE.
+This is especially valuable for foreign education loans which often have high interest.

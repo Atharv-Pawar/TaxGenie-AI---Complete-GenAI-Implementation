@@ -278,6 +278,7 @@ taxgenie-ai/
 │   │   └── 📁 shared/
 │   │       ├── Navbar.tsx
 │   │       └── LoadingOrchestrator.tsx   # Shows agent progress
+|   |       └── Providers.tsx            ← React Query wrapper (used in layout.tsx)
 │   │
 │   ├── 📁 lib/
 │   │   ├── api.ts                        # API client
@@ -289,6 +290,9 @@ taxgenie-ai/
 │   ├── package.json
 │   ├── tailwind.config.ts
 │   └── tsconfig.json
+|   ├── next.config.js
+|   └── postcss.config.js
+|
 │
 ├── 📁 backend/                           # Python FastAPI Application
 │   │
@@ -315,7 +319,7 @@ taxgenie-ai/
 │   │       ├── section_80c.txt
 │   │       ├── section_80d.txt
 │   │       ├── hra_rules.txt
-│   │       ├── new_regime_2024.txt
+│   │       ├── new_regime_2025.txt
 │   │       ├── old_regime_slabs.txt
 │   │       └── budget_2025_changes.txt
 │   │

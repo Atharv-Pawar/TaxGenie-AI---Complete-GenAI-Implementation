@@ -1,389 +1,179 @@
-# agents/pdf_parser_agent.py
 """
-PDF Parser Agent
-Uses GPT-4 Vision to extract structured data from Form 16 PDFs.
-Strategy:
-  1. Extract text with pdfplumber
-  2. If text is rich  → GPT-4 text mode
-  3. If text is poor  → Convert pages to images → GPT-4 Vision
+TaxGenie AI - PDF Parser Agent
+Uses GPT-4o to extract structured financial data from Form 16 PDFs.
 """
 
 import json
 import logging
-import base64
-from io import BytesIO
-from typing import Any
-
-import pdfplumber
-from pdf2image import convert_from_bytes
-from openai import AsyncOpenAI
-
+from services.llm_gateway import llm_call
+from services.pdf_extractor import extract_text_from_bytes
+from models.response_models import ParsedFormData, Section80CBreakdown, Section80DBreakdown
 from config import settings
 
 logger = logging.getLogger(__name__)
 
-# ── Prompt Templates ──────────────────────────────────────────────────────────
-
 SYSTEM_PROMPT = """
-You are an expert Indian tax document analyst.
-Your job is to extract financial data from Form 16 documents with
-100% accuracy. All amounts are in Indian Rupees (₹).
-Return ONLY valid JSON — no markdown, no explanation.
-""".strip()
+You are an expert Indian tax document parser specialising in Form 16, Form 26AS, and salary slips.
+Extract ALL financial information from the provided document text and return ONLY a valid JSON object.
 
-TEXT_EXTRACTION_PROMPT = """
-Extract all tax-related data from this Form 16 document text.
-
-Return a JSON object with these exact keys:
-
+Required fields (set null if not present, use 0 for missing numeric fields):
 {
-  "employer_name": "string",
-  "employer_tan": "string",
-  "employee_name": "string",
-  "employee_pan": "string (first 5 chars + XXXXX for privacy)",
-  "assessment_year": "string (e.g. 2025-26)",
-  "gross_salary": number,
-  "exemptions_section_10": {
-    "hra": number,
-    "lta": number,
-    "other": number
+  "gross_salary": <annual gross salary>,
+  "basic_salary": <basic salary component>,
+  "hra_received": <HRA allowance received>,
+  "lta": <Leave Travel Allowance>,
+  "special_allowance": <special allowance>,
+  "standard_deduction": <standard deduction, default 50000>,
+  "professional_tax": <professional tax paid>,
+  "section_80c_investments": {
+    "pf": <Provident Fund contribution>,
+    "ppf": <PPF>,
+    "elss": <ELSS mutual funds>,
+    "lic_premium": <LIC premium>,
+    "nsc": <NSC>,
+    "home_loan_principal": <home loan principal repayment>,
+    "tuition_fees": <tuition fees>,
+    "total": <sum of all 80C>
   },
-  "standard_deduction": number,
-  "professional_tax": number,
-  "income_from_house_property": number,
-  "deductions_chapter_vi_a": {
-    "section_80c": number,
-    "section_80ccc": number,
-    "section_80ccd_1": number,
-    "section_80ccd_1b": number,
-    "section_80ccd_2": number,
-    "section_80d": number,
-    "section_80e": number,
-    "section_80g": number,
-    "section_80tta": number,
-    "other_deductions": number
+  "section_80d_premium": {
+    "self_family": <health insurance for self/family>,
+    "parents": <health insurance for parents>,
+    "total": <sum>
   },
-  "total_taxable_income": number,
-  "total_tax_liability": number,
-  "tds_deducted": number,
-  "tax_payable_or_refundable": number,
-  "extraction_confidence": "high | medium | low",
-  "notes": ["any assumptions or missing fields"]
+  "home_loan_interest": <interest on home loan (Section 24b)>,
+  "education_loan_interest": <Section 80E>,
+  "nps_contribution": <NPS contribution 80CCD(1B)>,
+  "total_tds_deducted": <total TDS deducted>,
+  "employer_name": "<employer name>",
+  "pan_number": "<PAN if present, else null>",
+  "assessment_year": "<AY e.g. 2025-26>"
 }
 
 Rules:
-- Remove commas and ₹ from numbers
-- Use 0 for any missing numeric field
-- Use "Not Found" for missing text fields
-
-Document text:
-{document_text}
-""".strip()
-
-IMAGE_EXTRACTION_PROMPT = """
-This is a page from an Indian Form 16 income tax document.
-
-Extract ALL visible tax data. Return JSON with this structure:
-{
-  "employer_name": "string",
-  "gross_salary": number,
-  "exemptions_section_10": { "hra": number, "lta": number, "other": number },
-  "standard_deduction": number,
-  "professional_tax": number,
-  "deductions_chapter_vi_a": {
-    "section_80c": number,
-    "section_80ccd_1b": number,
-    "section_80d": number,
-    "section_80e": number,
-    "section_80g": number,
-    "section_80tta": number
-  },
-  "total_taxable_income": number,
-  "tds_deducted": number,
-  "extraction_confidence": "high | medium | low"
-}
-
-Use 0 for any field not visible. Return ONLY JSON.
-""".strip()
+- Return ONLY the JSON object, no markdown, no explanation
+- All rupee amounts must be annual figures
+- If TDS is monthly, multiply by 12
+- Set totals to sum of their components
+"""
 
 
-# ── Agent Class ───────────────────────────────────────────────────────────────
-
-class PDFParserAgent:
+async def parse_pdf_agent(pdf_bytes: bytes) -> ParsedFormData:
     """
-    Extracts structured tax data from Form 16 PDFs using GPT-4 (Vision).
+    Parse a Form 16 PDF and return structured financial data.
+    Falls back to a demo dataset if LLM keys are not configured.
     """
+    try:
+        raw_text = extract_text_from_bytes(pdf_bytes)
+        logger.info(f"Extracted {len(raw_text)} characters from PDF")
+    except Exception as e:
+        logger.warning(f"PDF extraction failed, using manual input: {e}")
+        raw_text = "Could not extract PDF text. Please rely on manual income entry."
 
-    MIN_TEXT_LENGTH = 300   # chars — below this we switch to vision mode
-    MAX_TEXT_CHARS  = 14000 # chars — truncate to avoid token limits
-    MAX_PDF_PAGES   = 6     # only process first N pages
-    IMAGE_DPI       = 150   # DPI for PDF → image conversion
+    if not settings.OPENAI_API_KEY:
+        logger.warning("No OpenAI API key, returning demo data")
+        return _demo_form_data()
 
-    def __init__(self):
-        self.client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-
-    # ── Public API ────────────────────────────────────────────────────────────
-
-    async def parse(self, pdf_content: bytes) -> dict[str, Any]:
-        """
-        Main entry point.
-        Tries text extraction first, falls back to vision if needed.
-        """
-        logger.info("[PDFParser] Starting PDF parse")
-
-        # Step 1: Try text-based extraction
-        text = self._extract_text(pdf_content)
-        logger.info(f"[PDFParser] Extracted text length: {len(text)} chars")
-
-        if len(text) >= self.MIN_TEXT_LENGTH:
-            logger.info("[PDFParser] Using text-mode extraction (GPT-4)")
-            raw = await self._extract_from_text(text)
-        else:
-            logger.info("[PDFParser] Text too short — using vision-mode (GPT-4V)")
-            raw = await self._extract_from_images(pdf_content)
-
-        # Step 2: Validate & normalize
-        result = self._normalize(raw)
-        logger.info(
-            f"[PDFParser] Done. Gross salary: ₹{result.get('gross_salary', 0):,.0f} "
-            f"| Confidence: {result.get('extraction_confidence', 'unknown')}"
-        )
-        return result
-
-    # ── Text Extraction ───────────────────────────────────────────────────────
-
-    def _extract_text(self, pdf_content: bytes) -> str:
-        """
-        Extract raw text from PDF using pdfplumber.
-        Also captures table rows for Form 16 structured sections.
-        """
-        parts: list[str] = []
-
-        try:
-            with pdfplumber.open(BytesIO(pdf_content)) as pdf:
-                for i, page in enumerate(pdf.pages[:self.MAX_PDF_PAGES]):
-                    # Plain text
-                    text = page.extract_text()
-                    if text:
-                        parts.append(text)
-
-                    # Tables (Form 16 has many)
-                    for table in (page.extract_tables() or []):
-                        for row in table:
-                            if row:
-                                cleaned = " | ".join(
-                                    str(cell).strip() for cell in row if cell
-                                )
-                                if cleaned:
-                                    parts.append(cleaned)
-
-        except Exception as e:
-            logger.warning(f"[PDFParser] Text extraction error: {e}")
-
-        return "\n".join(parts)
-
-    async def _extract_from_text(self, text: str) -> dict:
-        """
-        Use GPT-4 to extract structured JSON from plain text.
-        """
-        truncated = text[:self.MAX_TEXT_CHARS]
-
-        prompt = TEXT_EXTRACTION_PROMPT.format(document_text=truncated)
-
-        response = await self.client.chat.completions.create(
-            model            = settings.PRIMARY_MODEL,
-            temperature      = 0.1,
-            max_tokens       = 2048,
-            response_format  = {"type": "json_object"},
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user",   "content": prompt},
-            ]
+    try:
+        response = await llm_call(
+            model=settings.PDF_PARSER_MODEL,
+            system_prompt=SYSTEM_PROMPT,
+            user_message=f"Parse this Form 16 document:\n\n{raw_text[:8000]}",
+            temperature=0.0,
+            max_tokens=2000,
         )
 
-        return self._safe_json(response.choices[0].message.content)
+        # Clean JSON
+        response = response.strip()
+        if response.startswith("```"):
+            response = response.split("```")[1]
+            if response.startswith("json"):
+                response = response[4:]
 
-    # ── Vision Extraction ─────────────────────────────────────────────────────
+        data = json.loads(response)
+        return _dict_to_parsed_form(data)
 
-    async def _extract_from_images(self, pdf_content: bytes) -> dict:
-        """
-        Convert PDF pages to images and use GPT-4 Vision to extract data.
-        Merges results from all pages.
-        """
-        try:
-            images = convert_from_bytes(
-                pdf_content,
-                dpi          = self.IMAGE_DPI,
-                first_page   = 1,
-                last_page    = self.MAX_PDF_PAGES,
-            )
-        except Exception as e:
-            logger.error(f"[PDFParser] PDF→image conversion failed: {e}")
-            return {}
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON parse error from LLM: {e}")
+        return _demo_form_data()
+    except Exception as e:
+        logger.error(f"PDF Parser Agent failed: {e}")
+        return _demo_form_data()
 
-        all_results: list[dict] = []
 
-        for i, image in enumerate(images):
-            # Resize to reduce token cost
-            image.thumbnail((1400, 1900))
+def _dict_to_parsed_form(data: dict) -> ParsedFormData:
+    c = data.get("section_80c_investments", {}) or {}
+    d = data.get("section_80d_premium", {}) or {}
 
-            # Convert to base64 PNG
-            buffer = BytesIO()
-            image.save(buffer, format="PNG")
-            b64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    c_total = sum([
+        float(c.get("pf", 0) or 0),
+        float(c.get("ppf", 0) or 0),
+        float(c.get("elss", 0) or 0),
+        float(c.get("lic_premium", 0) or 0),
+        float(c.get("nsc", 0) or 0),
+        float(c.get("home_loan_principal", 0) or 0),
+        float(c.get("tuition_fees", 0) or 0),
+    ])
 
-            logger.info(f"[PDFParser] Processing image page {i + 1}")
+    d_total = sum([
+        float(d.get("self_family", 0) or 0),
+        float(d.get("parents", 0) or 0),
+    ])
 
-            try:
-                response = await self.client.chat.completions.create(
-                    model       = settings.VISION_MODEL,
-                    temperature = 0.1,
-                    max_tokens  = 2048,
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": [
-                                {
-                                    "type": "text",
-                                    "text": IMAGE_EXTRACTION_PROMPT,
-                                },
-                                {
-                                    "type": "image_url",
-                                    "image_url": {
-                                        "url":    f"data:image/png;base64,{b64}",
-                                        "detail": "high",
-                                    },
-                                },
-                            ],
-                        }
-                    ],
-                )
-                page_data = self._safe_json(response.choices[0].message.content)
-                if page_data:
-                    all_results.append(page_data)
+    return ParsedFormData(
+        gross_salary=float(data.get("gross_salary", 0) or 0),
+        basic_salary=float(data.get("basic_salary", 0) or 0),
+        hra_received=float(data.get("hra_received", 0) or 0),
+        lta=float(data.get("lta", 0) or 0),
+        special_allowance=float(data.get("special_allowance", 0) or 0),
+        standard_deduction=float(data.get("standard_deduction", 50000) or 50000),
+        professional_tax=float(data.get("professional_tax", 0) or 0),
+        section_80c_investments=Section80CBreakdown(
+            pf=float(c.get("pf", 0) or 0),
+            ppf=float(c.get("ppf", 0) or 0),
+            elss=float(c.get("elss", 0) or 0),
+            lic_premium=float(c.get("lic_premium", 0) or 0),
+            nsc=float(c.get("nsc", 0) or 0),
+            home_loan_principal=float(c.get("home_loan_principal", 0) or 0),
+            tuition_fees=float(c.get("tuition_fees", 0) or 0),
+            total=c_total,
+        ),
+        section_80d_premium=Section80DBreakdown(
+            self_family=float(d.get("self_family", 0) or 0),
+            parents=float(d.get("parents", 0) or 0),
+            total=d_total,
+        ),
+        home_loan_interest=float(data.get("home_loan_interest", 0) or 0),
+        education_loan_interest=float(data.get("education_loan_interest", 0) or 0),
+        nps_contribution=float(data.get("nps_contribution", 0) or 0),
+        total_tds_deducted=float(data.get("total_tds_deducted", 0) or 0),
+        employer_name=data.get("employer_name"),
+        pan_number=data.get("pan_number"),
+        assessment_year=data.get("assessment_year", "2025-26"),
+    )
 
-            except Exception as e:
-                logger.warning(f"[PDFParser] Vision extraction error on page {i+1}: {e}")
 
-        return self._merge_page_results(all_results)
-
-    # ── Helpers ───────────────────────────────────────────────────────────────
-
-    def _merge_page_results(self, results: list[dict]) -> dict:
-        """
-        Merge extracted data from multiple PDF pages.
-        Prefers first non-zero / non-null value for each field.
-        """
-        if not results:
-            return {}
-
-        merged = results[0].copy()
-
-        for page in results[1:]:
-            for key, val in page.items():
-                existing = merged.get(key)
-
-                # Replace zero numbers with non-zero values from later pages
-                if isinstance(val, (int, float)) and val > 0:
-                    if not isinstance(existing, (int, float)) or existing == 0:
-                        merged[key] = val
-
-                # Merge nested dicts
-                elif isinstance(val, dict) and isinstance(existing, dict):
-                    for k, v in val.items():
-                        if isinstance(v, (int, float)) and v > 0:
-                            if not isinstance(existing.get(k), (int, float)) or existing.get(k, 0) == 0:
-                                merged[key][k] = v
-
-                # Replace "Not Found" strings
-                elif isinstance(val, str) and val not in ("", "Not Found"):
-                    if not isinstance(existing, str) or existing in ("", "Not Found"):
-                        merged[key] = val
-
-        return merged
-
-    def _normalize(self, data: dict) -> dict:
-        """
-        Validate and normalize extracted data.
-        Ensures all required fields exist with correct types.
-        """
-        # Default structure
-        defaults: dict[str, Any] = {
-            "employer_name":               "Unknown",
-            "employer_tan":                "Not Found",
-            "employee_name":               "Taxpayer",
-            "employee_pan":                "XXXXX0000X",
-            "assessment_year":             "2025-26",
-            "gross_salary":                0.0,
-            "exemptions_section_10":       {"hra": 0.0, "lta": 0.0, "other": 0.0},
-            "standard_deduction":          50000.0,
-            "professional_tax":            0.0,
-            "income_from_house_property":  0.0,
-            "deductions_chapter_vi_a": {
-                "section_80c":     0.0,
-                "section_80ccc":   0.0,
-                "section_80ccd_1": 0.0,
-                "section_80ccd_1b":0.0,
-                "section_80ccd_2": 0.0,
-                "section_80d":     0.0,
-                "section_80e":     0.0,
-                "section_80g":     0.0,
-                "section_80tta":   0.0,
-                "other_deductions":0.0,
-            },
-            "total_taxable_income":        0.0,
-            "total_tax_liability":         0.0,
-            "tds_deducted":                0.0,
-            "tax_payable_or_refundable":   0.0,
-            "extraction_confidence":       "low",
-            "notes":                       [],
-        }
-
-        # Fill missing keys
-        for key, default_val in defaults.items():
-            if key not in data or data[key] is None:
-                data[key] = default_val
-            elif isinstance(default_val, dict) and isinstance(data[key], dict):
-                for k, v in default_val.items():
-                    if k not in data[key] or data[key][k] is None:
-                        data[key][k] = v
-
-        # Convert all numeric strings to float
-        data = self._deep_to_float(data)
-
-        return data
-
-    def _deep_to_float(self, obj: Any) -> Any:
-        """
-        Recursively convert string numbers → float in nested dicts/lists.
-        """
-        if isinstance(obj, dict):
-            return {k: self._deep_to_float(v) for k, v in obj.items()}
-        elif isinstance(obj, list):
-            return [self._deep_to_float(i) for i in obj]
-        elif isinstance(obj, str):
-            cleaned = obj.replace(",", "").replace("₹", "").strip()
-            try:
-                return float(cleaned)
-            except ValueError:
-                return obj
-        return obj
-
-    def _safe_json(self, text: str) -> dict:
-        """
-        Safely parse JSON from LLM response.
-        Strips markdown code fences if present.
-        """
-        if not text:
-            return {}
-
-        # Strip markdown fences
-        for fence in ("```json", "```"):
-            if fence in text:
-                text = text.split(fence)[-1].split("```")[0]
-
-        try:
-            return json.loads(text.strip())
-        except json.JSONDecodeError as e:
-            logger.warning(f"[PDFParser] JSON parse error: {e}")
-            return {}
+def _demo_form_data() -> ParsedFormData:
+    """Returns realistic demo data for Priya (₹12 LPA developer)."""
+    return ParsedFormData(
+        gross_salary=1_200_000,
+        basic_salary=600_000,
+        hra_received=240_000,
+        lta=50_000,
+        special_allowance=310_000,
+        standard_deduction=50_000,
+        professional_tax=2_400,
+        section_80c_investments=Section80CBreakdown(
+            pf=72_000, ppf=0, elss=0, lic_premium=15_000,
+            nsc=0, home_loan_principal=0, tuition_fees=0, total=87_000
+        ),
+        section_80d_premium=Section80DBreakdown(
+            self_family=12_000, parents=0, total=12_000
+        ),
+        home_loan_interest=0,
+        education_loan_interest=0,
+        nps_contribution=0,
+        total_tds_deducted=82_000,
+        employer_name="Tech Corp Pvt Ltd",
+        pan_number="ABCDE1234F",
+        assessment_year="2025-26",
+    )

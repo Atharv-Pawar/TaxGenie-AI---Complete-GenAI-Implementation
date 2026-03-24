@@ -1,0 +1,56 @@
+SECTION 87A - TAX REBATE
+FY 2024-25 | Income Tax Act, 1961
+
+WHAT IS SECTION 87A?
+Section 87A provides a rebate (direct reduction in tax payable) for lower-income taxpayers.
+It is applied AFTER calculating tax on taxable income but BEFORE adding cess.
+
+REBATE LIMITS FY 2024-25:
+
+OLD TAX REGIME:
+- Maximum rebate: ₹12,500
+- Eligibility: Net taxable income ≤ ₹5,00,000
+- Effect: Zero tax for income up to ₹5,00,000 in Old Regime
+
+NEW TAX REGIME:
+- Maximum rebate: ₹25,000
+- Eligibility: Net taxable income ≤ ₹7,00,000
+- Effect: Zero tax for income up to ₹7,75,000 (₹7L + ₹75K standard deduction)
+
+HOW IT WORKS (Example — New Regime):
+Gross Salary:          ₹8,00,000
+Less Standard Deduction: ₹75,000
+Net Taxable Income:    ₹7,25,000
+
+Tax on ₹7,25,000:
+  0-3L:   ₹0
+  3-6L:   ₹15,000 (5%)
+  6-7.25L: ₹12,500 (10%)
+  Total:  ₹27,500
+
+Apply 87A Rebate: ₹27,500 > ₹25,000 limit → Only ₹25,000 rebated
+Tax after rebate: ₹2,500
++ 4% cess: ₹100
+TOTAL TAX: ₹2,600
+
+COMPARISON FOR ₹7,00,000 NET INCOME (New Regime):
+Tax before rebate: ₹25,000 (exactly at limit)
+87A rebate: ₹25,000
+Tax payable: ₹0 (zero tax!)
+
+ELIGIBILITY:
+- Available to RESIDENT individuals only (not NRIs)
+- Not available to firms, HUF, companies
+- Applied against the basic tax, not surcharge/cess
+
+BUDGET 2025 CHANGES (Effective FY 2025-26):
+- New Regime rebate ENHANCED to ₹60,000
+- Eligibility threshold raised to ₹12,00,000
+- With standard deduction: zero tax up to ₹12,75,000
+NOTE: These changes are for FY 2025-26, NOT the current FY 2024-25.
+
+PRACTICAL IMPLICATIONS:
+1. If income is just above ₹7L (New Regime), try to reduce it below ₹7L
+   through 80CCD(2) employer NPS contribution to get zero tax.
+2. For Old Regime: ₹5L threshold means those with ₹5L after all deductions pay zero.
+3. The cliff effect: ₹7,00,001 income vs ₹7,00,000 — one extra rupee costs ₹25,000+ in tax.
