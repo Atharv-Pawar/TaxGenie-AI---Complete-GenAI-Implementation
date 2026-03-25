@@ -243,7 +243,7 @@ take 3 days.**
 
 ## 📁 Project Structure
 
-```
+<pre>```
 taxgenie-ai/
 │
 ├── 📁 frontend/                          # Next.js Application
@@ -378,7 +378,7 @@ taxgenie-ai/
 ├── .gitignore
 ├── LICENSE
 └── README.md                            # This file
-```
+```</pre>
 
 ---
 
