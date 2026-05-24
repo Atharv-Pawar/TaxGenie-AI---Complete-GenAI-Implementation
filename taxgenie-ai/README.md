@@ -944,6 +944,9 @@ python scripts/seed_knowledge_base.py --incremental
 
 ## 🎬 Demo Walkthrough
 
+### 📹 Video Demo
+Watch the complete TaxGenie AI demo video: [https://drive.google.com/file/d/1CMw9XPi0MROhv8udTWN48oJ5hzdf_gts/view?usp=sharing](https://drive.google.com/file/d/1CMw9XPi0MROhv8udTWN48oJ5hzdf_gts/view?usp=sharing)
+
 ### Step 1: Upload Form 16
 ```
 1. Go to http://localhost:3000
