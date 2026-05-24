@@ -1152,12 +1152,12 @@ copies or substantial portions of the Software.
 > The following screenshots show the final output on execution of this code.
 
 ### 🏠 Landing Page
-![TaxGenie AI Landing Page](./taxgenie AI landingpage.png)
+![TaxGenie AI Landing Page](taxgenie%20AI%20landingpage.png)
 
 *The TaxGenie AI home screen — upload your Form 16 and get a complete personalised tax analysis in under 90 seconds.*
 
 ### 📊 Tax Analysis Results
-![TaxGenie AI Output](./taxGenie AI output.png)
+![TaxGenie AI Output](taxGenie%20AI%20output.png)
 
 *The results dashboard showing total tax savings available (₹1,60,963), recommended tax regime, missed deductions, and optimised tax amount for the assessment year 2025-26.*
 
